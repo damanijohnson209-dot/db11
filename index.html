@@ -18,7 +18,6 @@
     --accent-glow: rgba(59, 130, 246, 0.15);
     --success: #10b981;
     --warning: #f59e0b;
-    --danger: #ef4444;
     --mono: 'JetBrains Mono', monospace;
     --sans: 'IBM Plex Sans', -apple-system, sans-serif;
   }
@@ -31,14 +30,12 @@
   }
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image:
       linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    z-index: 0;
-    pointer-events: none;
+    z-index: 0; pointer-events: none;
   }
   .app { position: relative; z-index: 1; }
   .header {
@@ -56,17 +53,13 @@
   .header h1 { font-family: var(--mono); font-size: 1.6rem; font-weight: 700; }
   .header h1 span { color: var(--accent); }
   .header-sub { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
-  .instructions {
-    margin: 1rem 2rem 0; padding: 1rem 1.25rem;
+  .tip {
+    margin: 1rem 2rem 0; padding: 0.75rem 1rem;
     background: rgba(59, 130, 246, 0.06); border: 1px solid rgba(59, 130, 246, 0.15);
-    border-radius: 8px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7;
+    border-radius: 8px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;
+    font-family: var(--mono);
   }
-  .instructions strong { color: var(--accent); font-family: var(--mono); font-size: 0.72rem; }
-  .step-num {
-    display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
-    background: var(--accent); color: #fff; border-radius: 50%; font-size: 0.65rem;
-    font-weight: 700; margin-right: 0.4rem;
-  }
+  .tip b { color: var(--accent); }
   .toolbar {
     padding: 1rem 2rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
     border-bottom: 1px solid var(--border); background: rgba(17, 24, 39, 0.6);
@@ -100,11 +93,11 @@
   .grid-container { padding: 1.5rem 2rem 6rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; }
   .issue-card {
-    position: relative; display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     padding: 0.7rem 0.4rem; background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 6px; cursor: pointer; transition: all 0.15s; text-decoration: none;
     color: var(--text-primary); font-family: var(--mono); font-size: 0.8rem;
-    font-weight: 600; user-select: none;
+    font-weight: 600; position: relative; user-select: none;
   }
   .issue-card:hover {
     background: var(--bg-card-hover); border-color: var(--accent);
@@ -150,21 +143,11 @@
   }
   .modal input[type="number"]:focus { border-color: var(--accent); }
   .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
-  .script-modal .modal { width: 600px; max-width: 95vw; }
-  .script-modal .modal p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; line-height: 1.5; }
-  .script-modal-content {
-    max-height: 50vh; overflow-y: auto; background: var(--bg-primary);
-    border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 0.75rem 0;
-  }
-  .script-modal-content pre {
-    font-family: var(--mono); font-size: 0.68rem; color: var(--success);
-    white-space: pre-wrap; word-break: break-all; line-height: 1.6;
-  }
   @media (max-width: 600px) {
     .header, .toolbar, .grid-container { padding-left: 1rem; padding-right: 1rem; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 0.4rem; }
     .issue-card { font-size: 0.7rem; padding: 0.6rem 0.3rem; }
-    .instructions { margin: 0.75rem 1rem 0; }
+    .tip { margin: 0.75rem 1rem 0; }
   }
 </style>
 </head>
@@ -173,12 +156,10 @@
   <div class="header">
     <div class="header-top"><div class="header-badge">EPMS JIRA</div></div>
     <h1><span>DB-</span>Issue Viewer</h1>
-    <div class="header-sub">DB-1 through DB-187 &bull; jira.epms.af.mil &bull; Printable HTML Views</div>
-    <div class="instructions">
-      <span class="step-num">1</span> Select issues below (click cards, <strong>Select Range</strong>, or <strong>Select All</strong>)<br>
-      <span class="step-num">2</span> Click <strong>Save as HTML</strong> or <strong>Save as PDF</strong> — downloads a PowerShell script<br>
-      <span class="step-num">3</span> Log into JIRA with your CAC in Chrome, then <strong>close Chrome</strong><br>
-      <span class="step-num">4</span> Right-click the .ps1 file &rarr; <strong>Run with PowerShell</strong> — files save to Desktop
+    <div class="header-sub">DB-1 through DB-187 &bull; jira.epms.af.mil</div>
+    <div class="tip">
+      <b>Click</b> a card to open it &bull; <b>Ctrl+Click</b> to select multiple &bull; <b>Shift+Click</b> for range<br>
+      Save any page: <b>Ctrl+S</b> &rarr; Save as type: <b>Webpage, Complete</b>
     </div>
   </div>
 
@@ -188,9 +169,8 @@
     <button class="btn" onclick="selectAll()">Select All</button>
     <button class="btn" onclick="clearSelection()">Clear</button>
     <div class="divider"></div>
-    <button class="btn btn-success" onclick="generateScript('html')">&#11015; Save as HTML</button>
-    <button class="btn btn-accent" onclick="generateScript('pdf')">&#11015; Save as PDF</button>
-    <button class="btn" onclick="openSelected()">Open in Tabs</button>
+    <button class="btn btn-accent" onclick="openSelected()">Open Selected</button>
+    <button class="btn" onclick="copyLinks()">Copy Links</button>
     <div class="stats">
       <span id="visibleCount">187</span> shown &middot; <strong id="selectedCount">0</strong> selected
     </div>
@@ -201,9 +181,7 @@
   <div class="selection-bar" id="selectionBar">
     <div class="info"><span id="selBarCount">0</span> issues selected</div>
     <div class="actions">
-      <button class="btn btn-success" onclick="generateScript('html')">&#11015; Save as HTML</button>
-      <button class="btn btn-accent" onclick="generateScript('pdf')">&#11015; Save as PDF</button>
-      <button class="btn" onclick="openSelected()">Open in Tabs</button>
+      <button class="btn btn-accent" onclick="openSelected()">Open All in Tabs</button>
       <button class="btn" onclick="copyLinks()">Copy Links</button>
       <button class="btn" onclick="clearSelection()">Clear</button>
     </div>
@@ -223,51 +201,46 @@
     </div>
   </div>
 
-  <div class="modal-overlay script-modal" id="scriptModal">
-    <div class="modal">
-      <h3 id="scriptModalTitle">PowerShell Script Ready</h3>
-      <p>Script downloaded. Right-click the .ps1 file &rarr; <strong>Run with PowerShell</strong>.</p>
-      <p style="color: var(--warning); font-size: 0.72rem;">&#9888; Log into JIRA with your CAC first, then close Chrome before running.</p>
-      <div class="script-modal-content"><pre id="scriptPreview"></pre></div>
-      <div class="modal-actions">
-        <button class="btn" onclick="closeScriptModal()">Close</button>
-        <button class="btn btn-accent" onclick="copyScript()">Copy Script</button>
-      </div>
-    </div>
-  </div>
-
   <div class="toast" id="toast"></div>
 </div>
 
 <script>
-const BASE_URL = 'https://jira.epms.af.mil/si/jira.issueviews:issue-html';
-const TOTAL = 187;
-const selected = new Set();
-let lastScript = '';
+var BASE_URL = 'https://jira.epms.af.mil/si/jira.issueviews:issue-html';
+var TOTAL = 187;
+var selected = new Set();
 
-const grid = document.getElementById('grid');
-for (let i = 1; i <= TOTAL; i++) {
-  const card = document.createElement('div');
-  card.className = 'issue-card';
-  card.textContent = 'DB-' + i;
-  card.dataset.num = i;
-  card.addEventListener('click', function(e) {
-    if (e.shiftKey && selected.size > 0) {
-      var nums = Array.from(selected).sort(function(a,b){return a-b;});
-      var last = nums[nums.length-1];
-      var lo = Math.min(last, i), hi = Math.max(last, i);
-      for (var n = lo; n <= hi; n++) {
-        selected.add(n);
-        var c = grid.querySelector('[data-num="'+n+'"]');
-        if (c) c.classList.add('selected');
+var grid = document.getElementById('grid');
+for (var i = 1; i <= TOTAL; i++) {
+  (function(num) {
+    var card = document.createElement('a');
+    card.className = 'issue-card';
+    card.textContent = 'DB-' + num;
+    card.href = BASE_URL + '/DB-' + num + '/DB-' + num + '.html';
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.dataset.num = num;
+
+    card.addEventListener('click', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        toggleSelect(num, card);
+      } else if (e.shiftKey && selected.size > 0) {
+        e.preventDefault();
+        var nums = Array.from(selected).sort(function(a,b){return a-b;});
+        var last = nums[nums.length-1];
+        var lo = Math.min(last, num), hi = Math.max(last, num);
+        for (var n = lo; n <= hi; n++) {
+          selected.add(n);
+          var c = grid.querySelector('[data-num="'+n+'"]');
+          if (c) c.classList.add('selected');
+        }
+        updateCounts();
       }
-    } else { toggleSelect(i, card); }
-    updateCounts();
-  });
-  card.addEventListener('dblclick', function() {
-    window.open(BASE_URL + '/DB-' + i + '/DB-' + i + '.html', '_blank');
-  });
-  grid.appendChild(card);
+      // Normal click: just follows the <a> link naturally
+    });
+
+    grid.appendChild(card);
+  })(i);
 }
 
 function toggleSelect(num, card) {
@@ -301,157 +274,16 @@ function applyRange() {
     if (num >= lo && num <= hi) { selected.add(num); card.classList.add('selected'); }
   }); updateCounts(); closeRangeModal();
 }
-
-function generateScript(format) {
-  if (selected.size === 0) { showToast('Select issues first!', 'var(--warning)'); return; }
-  var sorted = Array.from(selected).sort(function(a,b){return a-b;});
-  var ext = format === 'pdf' ? 'pdf' : 'html';
-  var folder = 'JIRA_DB_' + ext.toUpperCase();
-  var issueList = sorted.map(function(n){return '"DB-'+n+'"';}).join(', ');
-
-  var script = '# =========================================================\r\n';
-  script += '# JIRA DB Issue Downloader - ' + sorted.length + ' issues as ' + ext.toUpperCase() + '\r\n';
-  script += '# Generated: ' + new Date().toLocaleString() + '\r\n';
-  script += '# =========================================================\r\n';
-  script += '#\r\n';
-  script += '# HOW TO USE:\r\n';
-  script += '#   1. Open Chrome - log into JIRA with your CAC\r\n';
-  script += '#   2. Close Chrome completely\r\n';
-  script += '#   3. Right-click this file - Run with PowerShell\r\n';
-  script += '#\r\n';
-  script += '# =========================================================\r\n\r\n';
-
-  script += '$outputDir = "$env:USERPROFILE\\Desktop\\' + folder + '"\r\n';
-  script += '$chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"\r\n\r\n';
-  script += 'if (-not (Test-Path $chromePath)) {\r\n';
-  script += '    $chromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"\r\n';
-  script += '}\r\n';
-  script += 'if (-not (Test-Path $chromePath)) {\r\n';
-  script += '    Write-Host "ERROR: Chrome not found." -ForegroundColor Red\r\n';
-  script += '    Read-Host "Press Enter to exit"\r\n';
-  script += '    exit\r\n';
-  script += '}\r\n\r\n';
-
-  script += '$running = Get-Process -Name "chrome" -ErrorAction SilentlyContinue\r\n';
-  script += 'if ($running) {\r\n';
-  script += '    Write-Host ""\r\n';
-  script += '    Write-Host "  Chrome is still open!" -ForegroundColor Yellow\r\n';
-  script += '    Write-Host "  Close Chrome so this script can use your login session." -ForegroundColor Yellow\r\n';
-  script += '    $confirm = Read-Host "  Close Chrome now? (Y/N)"\r\n';
-  script += '    if ($confirm -match "^[Yy]") {\r\n';
-  script += '        Stop-Process -Name "chrome" -Force\r\n';
-  script += '        Start-Sleep -Seconds 3\r\n';
-  script += '    } else {\r\n';
-  script += '        Write-Host "Close Chrome and re-run." -ForegroundColor Red\r\n';
-  script += '        Read-Host "Press Enter to exit"\r\n';
-  script += '        exit\r\n';
-  script += '    }\r\n';
-  script += '}\r\n\r\n';
-
-  script += 'New-Item -ItemType Directory -Path $outputDir -Force | Out-Null\r\n\r\n';
-  script += 'Write-Host ""\r\n';
-  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  JIRA DB Issue Downloader" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  Saving ' + sorted.length + ' issues as ' + ext.toUpperCase() + '" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  Output: $outputDir" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host ""\r\n\r\n';
-
-  script += '$baseUrl = "' + BASE_URL + '"\r\n';
-  script += '$issues = @(' + issueList + ')\r\n\r\n';
-  script += '$success = 0\r\n';
-  script += '$failed = @()\r\n';
-  script += '$total = $issues.Count\r\n\r\n';
-
-  script += 'foreach ($i in 0..($total - 1)) {\r\n';
-  script += '    $key = $issues[$i]\r\n';
-  script += '    $num = $i + 1\r\n';
-  script += '    $url = "$baseUrl/$key/$key.html"\r\n';
-  script += '    $outFile = "$outputDir\\$key.' + ext + '"\r\n\r\n';
-  script += '    if ((Test-Path $outFile) -and (Get-Item $outFile).Length -gt 500) {\r\n';
-  script += '        Write-Host "  [$num/$total] $key - SKIP (exists)" -ForegroundColor DarkGray\r\n';
-  script += '        $success++\r\n';
-  script += '        continue\r\n';
-  script += '    }\r\n\r\n';
-  script += '    Write-Host -NoNewline "  [$num/$total] $key ... "\r\n\r\n';
-  script += '    try {\r\n';
-
-  if (format === 'html') {
-    script += '        $result = & $chromePath --headless --disable-gpu --no-sandbox --dump-dom $url 2>$null\r\n';
-    script += '        if ($result -and $result.Length -gt 100) {\r\n';
-    script += '            $result | Out-File -FilePath $outFile -Encoding UTF8\r\n';
-    script += '            Write-Host "OK" -ForegroundColor Green\r\n';
-    script += '            $success++\r\n';
-    script += '        } else {\r\n';
-    script += '            Write-Host "EMPTY" -ForegroundColor Red\r\n';
-    script += '            $failed += $key\r\n';
-    script += '        }\r\n';
-  } else {
-    script += '        Start-Process -FilePath $chromePath -ArgumentList @(\r\n';
-    script += '            "--headless",\r\n';
-    script += '            "--disable-gpu",\r\n';
-    script += '            "--no-sandbox",\r\n';
-    script += '            "--print-to-pdf=$outFile",\r\n';
-    script += '            "--print-to-pdf-no-header",\r\n';
-    script += '            "$url"\r\n';
-    script += '        ) -Wait -WindowStyle Hidden\r\n\r\n';
-    script += '        if ((Test-Path $outFile) -and (Get-Item $outFile).Length -gt 1000) {\r\n';
-    script += '            Write-Host "OK" -ForegroundColor Green\r\n';
-    script += '            $success++\r\n';
-    script += '        } else {\r\n';
-    script += '            Write-Host "FAILED" -ForegroundColor Red\r\n';
-    script += '            $failed += $key\r\n';
-    script += '            if (Test-Path $outFile) { Remove-Item $outFile -Force }\r\n';
-    script += '        }\r\n';
-  }
-
-  script += '    } catch {\r\n';
-  script += '        Write-Host "ERROR: $_" -ForegroundColor Red\r\n';
-  script += '        $failed += $key\r\n';
-  script += '    }\r\n\r\n';
-  script += '    Start-Sleep -Milliseconds 1500\r\n';
-  script += '}\r\n\r\n';
-
-  script += 'Write-Host ""\r\n';
-  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  DONE - $success / $total saved" -ForegroundColor Green\r\n';
-  script += 'if ($failed.Count -gt 0) {\r\n';
-  script += '    Write-Host "  Failed: $($failed -join \', \')" -ForegroundColor Red\r\n';
-  script += '}\r\n';
-  script += 'Write-Host "  Files: $outputDir" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
-  script += 'Write-Host ""\r\n\r\n';
-  script += 'Start-Process explorer.exe $outputDir\r\n';
-  script += 'Read-Host "Press Enter to close"\r\n';
-
-  lastScript = script;
-
-  var blob = new Blob([script], { type: 'text/plain' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'Save-DB-Issues-' + ext.toUpperCase() + '.ps1';
-  a.click();
-  URL.revokeObjectURL(a.href);
-
-  document.getElementById('scriptModalTitle').textContent = 'Script Downloaded - ' + sorted.length + ' issues as ' + ext.toUpperCase();
-  document.getElementById('scriptPreview').textContent = script;
-  document.getElementById('scriptModal').classList.add('open');
-  showToast('Script downloaded! ' + sorted.length + ' issues', 'var(--success)');
-}
-
-function closeScriptModal() { document.getElementById('scriptModal').classList.remove('open'); }
-function copyScript() {
-  navigator.clipboard.writeText(lastScript).then(function(){ showToast('Copied!', 'var(--success)'); });
-}
 function openSelected() {
-  if (selected.size === 0) return;
-  if (selected.size > 15 && !confirm('Open ' + selected.size + ' tabs?')) return;
-  Array.from(selected).sort(function(a,b){return a-b;}).forEach(function(n){
+  if (selected.size === 0) { showToast('Select issues first (Ctrl+Click)', 'var(--warning)'); return; }
+  if (selected.size > 20 && !confirm('Open ' + selected.size + ' tabs? Chrome might struggle.\n\nTip: Do 10-20 at a time.')) return;
+  Array.from(selected).sort(function(a,b){return a-b;}).forEach(function(n) {
     window.open(BASE_URL + '/DB-' + n + '/DB-' + n + '.html', '_blank');
   });
+  showToast(selected.size + ' tabs opened', 'var(--success)');
 }
 function copyLinks() {
-  if (selected.size === 0) return;
+  if (selected.size === 0) { showToast('Select issues first', 'var(--warning)'); return; }
   var links = Array.from(selected).sort(function(a,b){return a-b;})
     .map(function(n){return BASE_URL+'/DB-'+n+'/DB-'+n+'.html';}).join('\n');
   navigator.clipboard.writeText(links).then(function(){ showToast(selected.size + ' links copied!', 'var(--success)'); });
@@ -476,11 +308,9 @@ function showToast(msg, color) {
   t.textContent = msg; t.style.background = color || 'var(--success)';
   t.classList.add('show'); setTimeout(function(){t.classList.remove('show');}, 2500);
 }
-
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    if (document.getElementById('scriptModal').classList.contains('open')) closeScriptModal();
-    else if (document.getElementById('rangeModal').classList.contains('open')) closeRangeModal();
+    if (document.getElementById('rangeModal').classList.contains('open')) closeRangeModal();
     else { document.getElementById('search').value = ''; document.getElementById('search').dispatchEvent(new Event('input')); }
   }
 });
