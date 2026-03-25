@@ -56,7 +56,7 @@
   .tip {
     margin: 1rem 2rem 0; padding: 0.75rem 1rem;
     background: rgba(59, 130, 246, 0.06); border: 1px solid rgba(59, 130, 246, 0.15);
-    border-radius: 8px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;
+    border-radius: 8px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7;
     font-family: var(--mono);
   }
   .tip b { color: var(--accent); }
@@ -134,7 +134,9 @@
     background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
     padding: 1.5rem; width: 340px; max-width: 90vw;
   }
+  .modal.wide { width: 640px; }
   .modal h3 { font-family: var(--mono); font-size: 0.9rem; margin-bottom: 1rem; }
+  .modal p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.75rem; }
   .modal label { display: block; font-family: var(--mono); font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
   .modal input[type="number"] {
     width: 100%; padding: 0.5rem; background: var(--bg-primary); border: 1px solid var(--border);
@@ -142,7 +144,26 @@
     margin-bottom: 0.75rem; outline: none;
   }
   .modal input[type="number"]:focus { border-color: var(--accent); }
-  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.75rem; }
+  .cmd-box {
+    background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1rem; margin: 0.75rem 0; max-height: 200px; overflow-y: auto;
+  }
+  .cmd-box pre {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--success);
+    white-space: pre-wrap; word-break: break-all; line-height: 1.6;
+  }
+  .steps { margin: 0.5rem 0 0.75rem; }
+  .steps div {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--text-secondary);
+    padding: 0.3rem 0; display: flex; align-items: baseline; gap: 0.5rem;
+  }
+  .steps .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; min-width: 18px;
+    background: var(--accent); color: #fff; border-radius: 50%;
+    font-size: 0.6rem; font-weight: 700;
+  }
   @media (max-width: 600px) {
     .header, .toolbar, .grid-container { padding-left: 1rem; padding-right: 1rem; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 0.4rem; }
@@ -158,8 +179,8 @@
     <h1><span>DB-</span>Issue Viewer</h1>
     <div class="header-sub">DB-1 through DB-187 &bull; jira.epms.af.mil</div>
     <div class="tip">
-      <b>Click</b> a card to open it &bull; <b>Ctrl+Click</b> to select multiple &bull; <b>Shift+Click</b> for range<br>
-      Save any page: <b>Ctrl+S</b> &rarr; Save as type: <b>Webpage, Complete</b>
+      <b>Click</b> = open issue &bull; <b>Ctrl+Click</b> = select &bull; <b>Shift+Click</b> = range select<br>
+      <b>Batch Save</b> = copies a PowerShell command &rarr; paste into PowerShell &rarr; all files saved to Desktop
     </div>
   </div>
 
@@ -169,7 +190,8 @@
     <button class="btn" onclick="selectAll()">Select All</button>
     <button class="btn" onclick="clearSelection()">Clear</button>
     <div class="divider"></div>
-    <button class="btn btn-accent" onclick="openSelected()">Open Selected</button>
+    <button class="btn btn-success" onclick="batchSave()">&#9660; Batch Save HTML</button>
+    <button class="btn btn-accent" onclick="openSelected()">Open in Tabs</button>
     <button class="btn" onclick="copyLinks()">Copy Links</button>
     <div class="stats">
       <span id="visibleCount">187</span> shown &middot; <strong id="selectedCount">0</strong> selected
@@ -181,12 +203,14 @@
   <div class="selection-bar" id="selectionBar">
     <div class="info"><span id="selBarCount">0</span> issues selected</div>
     <div class="actions">
-      <button class="btn btn-accent" onclick="openSelected()">Open All in Tabs</button>
+      <button class="btn btn-success" onclick="batchSave()">&#9660; Batch Save HTML</button>
+      <button class="btn btn-accent" onclick="openSelected()">Open in Tabs</button>
       <button class="btn" onclick="copyLinks()">Copy Links</button>
       <button class="btn" onclick="clearSelection()">Clear</button>
     </div>
   </div>
 
+  <!-- Range Modal -->
   <div class="modal-overlay" id="rangeModal">
     <div class="modal">
       <h3>Select Range</h3>
@@ -201,6 +225,25 @@
     </div>
   </div>
 
+  <!-- Batch Save Modal -->
+  <div class="modal-overlay" id="batchModal">
+    <div class="modal wide">
+      <h3>&#9989; Command Copied to Clipboard</h3>
+      <div class="steps">
+        <div><span class="num">1</span> Log into JIRA with your CAC in Chrome</div>
+        <div><span class="num">2</span> Close Chrome</div>
+        <div><span class="num">3</span> Open PowerShell</div>
+        <div><span class="num">4</span> Right-click to paste, hit Enter</div>
+        <div><span class="num">5</span> Files save to Desktop\JIRA_DB_HTML</div>
+      </div>
+      <div class="cmd-box"><pre id="cmdPreview"></pre></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeBatchModal()">Close</button>
+        <button class="btn btn-success" onclick="copyCmd()">Copy Again</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 </div>
 
@@ -208,6 +251,7 @@
 var BASE_URL = 'https://jira.epms.af.mil/si/jira.issueviews:issue-html';
 var TOTAL = 187;
 var selected = new Set();
+var lastCmd = '';
 
 var grid = document.getElementById('grid');
 for (var i = 1; i <= TOTAL; i++) {
@@ -219,7 +263,6 @@ for (var i = 1; i <= TOTAL; i++) {
     card.target = '_blank';
     card.rel = 'noopener';
     card.dataset.num = num;
-
     card.addEventListener('click', function(e) {
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
@@ -236,9 +279,7 @@ for (var i = 1; i <= TOTAL; i++) {
         }
         updateCounts();
       }
-      // Normal click: just follows the <a> link naturally
     });
-
     grid.appendChild(card);
   })(i);
 }
@@ -265,6 +306,7 @@ function clearSelection() {
 }
 function selectRange() { document.getElementById('rangeModal').classList.add('open'); }
 function closeRangeModal() { document.getElementById('rangeModal').classList.remove('open'); }
+function closeBatchModal() { document.getElementById('batchModal').classList.remove('open'); }
 function applyRange() {
   var s = parseInt(document.getElementById('rangeStart').value)||1;
   var e = parseInt(document.getElementById('rangeEnd').value)||187;
@@ -274,9 +316,41 @@ function applyRange() {
     if (num >= lo && num <= hi) { selected.add(num); card.classList.add('selected'); }
   }); updateCounts(); closeRangeModal();
 }
-function openSelected() {
+
+function batchSave() {
   if (selected.size === 0) { showToast('Select issues first (Ctrl+Click)', 'var(--warning)'); return; }
-  if (selected.size > 20 && !confirm('Open ' + selected.size + ' tabs? Chrome might struggle.\n\nTip: Do 10-20 at a time.')) return;
+  var sorted = Array.from(selected).sort(function(a,b){return a-b;});
+
+  var cmd = '$d="$env:USERPROFILE\\Desktop\\JIRA_DB_HTML"; $c="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; if(!(Test-Path $c)){$c="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"} md $d -Force|Out-Null; ';
+  cmd += '@(' + sorted.map(function(n){return '"DB-'+n+'"';}).join(',') + ') | %{ ';
+  cmd += '$u="' + BASE_URL + '/$_/$_.html"; $f="$d\\$_.html"; ';
+  cmd += 'if((Test-Path $f) -and (gi $f).Length -gt 500){Write-Host "SKIP $_" -Fo DarkGray}else{';
+  cmd += 'Write-Host -No "  $_ ... "; ';
+  cmd += '$r = & $c --headless --disable-gpu --no-sandbox --dump-dom $u 2>$null; ';
+  cmd += 'if($r -and $r.Length -gt 100){$r|Out-File $f -Enc UTF8; Write-Host "OK" -Fo Green}';
+  cmd += 'else{Write-Host "FAIL" -Fo Red}; sleep 1}}; ';
+  cmd += 'Write-Host "`nDone! ' + sorted.length + ' issues saved to $d" -Fo Cyan; explorer $d';
+
+  lastCmd = cmd;
+
+  navigator.clipboard.writeText(cmd).then(function() {
+    document.getElementById('cmdPreview').textContent = cmd;
+    document.getElementById('batchModal').classList.add('open');
+    showToast('Copied! Paste into PowerShell', 'var(--success)');
+  }).catch(function() {
+    document.getElementById('cmdPreview').textContent = cmd;
+    document.getElementById('batchModal').classList.add('open');
+    showToast('Copy from the box below', 'var(--warning)');
+  });
+}
+
+function copyCmd() {
+  navigator.clipboard.writeText(lastCmd).then(function(){ showToast('Copied!', 'var(--success)'); });
+}
+
+function openSelected() {
+  if (selected.size === 0) { showToast('Select issues first', 'var(--warning)'); return; }
+  if (selected.size > 20 && !confirm('Open ' + selected.size + ' tabs?')) return;
   Array.from(selected).sort(function(a,b){return a-b;}).forEach(function(n) {
     window.open(BASE_URL + '/DB-' + n + '/DB-' + n + '.html', '_blank');
   });
@@ -310,7 +384,8 @@ function showToast(msg, color) {
 }
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    if (document.getElementById('rangeModal').classList.contains('open')) closeRangeModal();
+    if (document.getElementById('batchModal').classList.contains('open')) closeBatchModal();
+    else if (document.getElementById('rangeModal').classList.contains('open')) closeRangeModal();
     else { document.getElementById('search').value = ''; document.getElementById('search').dispatchEvent(new Event('input')); }
   }
 });
