@@ -11,7 +11,6 @@
     --bg-card: #111827;
     --bg-card-hover: #1a2332;
     --border: #1e2d3d;
-    --border-active: #3b82f6;
     --text-primary: #e2e8f0;
     --text-secondary: #7a8ba3;
     --text-muted: #4a5568;
@@ -23,18 +22,13 @@
     --mono: 'JetBrains Mono', monospace;
     --sans: 'IBM Plex Sans', -apple-system, sans-serif;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: var(--sans);
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
-    overflow-x: hidden;
   }
-
-  /* Subtle grid background */
   body::before {
     content: '';
     position: fixed;
@@ -46,324 +40,170 @@
     z-index: 0;
     pointer-events: none;
   }
-
   .app { position: relative; z-index: 1; }
-
-  /* --- HEADER --- */
   .header {
     padding: 2rem 2rem 1.5rem;
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
   }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
+  .header-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
   .header-badge {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-glow);
-    padding: 0.25rem 0.6rem;
-    border-radius: 3px;
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    background: var(--accent-glow); padding: 0.25rem 0.6rem; border-radius: 3px;
     border: 1px solid rgba(59, 130, 246, 0.2);
   }
-
-  .header h1 {
-    font-family: var(--mono);
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-  }
-
+  .header h1 { font-family: var(--mono); font-size: 1.6rem; font-weight: 700; }
   .header h1 span { color: var(--accent); }
-
-  .header-sub {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
+  .header-sub { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
+  .instructions {
+    margin: 1rem 2rem 0; padding: 1rem 1.25rem;
+    background: rgba(59, 130, 246, 0.06); border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 8px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7;
   }
-
-  /* --- TOOLBAR --- */
+  .instructions strong { color: var(--accent); font-family: var(--mono); font-size: 0.72rem; }
+  .step-num {
+    display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
+    background: var(--accent); color: #fff; border-radius: 50%; font-size: 0.65rem;
+    font-weight: 700; margin-right: 0.4rem;
+  }
   .toolbar {
-    padding: 1rem 2rem;
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    flex-wrap: wrap;
-    border-bottom: 1px solid var(--border);
-    background: rgba(17, 24, 39, 0.6);
-    backdrop-filter: blur(8px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 1rem 2rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border); background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100;
   }
-
-  .search-box {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-  }
-
+  .search-box { flex: 1; min-width: 180px; position: relative; }
   .search-box input {
-    width: 100%;
-    padding: 0.55rem 0.75rem 0.55rem 2.2rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-primary);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; padding: 0.55rem 0.75rem 0.55rem 2.2rem;
+    background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text-primary); font-family: var(--mono); font-size: 0.8rem; outline: none;
   }
-
   .search-box input:focus { border-color: var(--accent); }
-
   .search-box::before {
-    content: '⌕';
-    position: absolute;
-    left: 0.7rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    content: '\2315'; position: absolute; left: 0.7rem; top: 50%;
+    transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;
   }
-
   .btn {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.55rem 0.9rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+    padding: 0.55rem 0.9rem; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+    transition: all 0.15s; white-space: nowrap;
   }
-
-  .btn:hover {
-    background: var(--bg-card-hover);
-    color: var(--text-primary);
-    border-color: var(--text-muted);
-  }
-
-  .btn.active {
-    background: var(--accent-glow);
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .btn-accent {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-
-  .btn-accent:hover {
-    background: #2563eb;
-    color: #fff;
-  }
-
-  .stats {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-left: auto;
-  }
-
+  .btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--text-muted); }
+  .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-accent:hover { background: #2563eb; color: #fff; }
+  .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+  .btn-success:hover { background: #059669; color: #fff; }
+  .divider { width: 1px; height: 24px; background: var(--border); }
+  .stats { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-left: auto; }
   .stats strong { color: var(--text-secondary); }
-
-  /* --- GRID --- */
-  .grid-container { padding: 1.5rem 2rem 3rem; }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 0.5rem;
-  }
-
+  .grid-container { padding: 1.5rem 2rem 6rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; }
   .issue-card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem 0.4rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 600;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    padding: 0.7rem 0.4rem; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; cursor: pointer; transition: all 0.15s; text-decoration: none;
+    color: var(--text-primary); font-family: var(--mono); font-size: 0.8rem;
+    font-weight: 600; user-select: none;
   }
-
   .issue-card:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
-    color: var(--accent);
+    background: var(--bg-card-hover); border-color: var(--accent);
+    transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1); color: var(--accent);
   }
-
-  .issue-card.selected {
-    background: var(--accent-glow);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
+  .issue-card.selected { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
   .issue-card.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 2px;
-    right: 4px;
-    font-size: 0.55rem;
-    color: var(--success);
+    content: '\2713'; position: absolute; top: 2px; right: 5px;
+    font-size: 0.6rem; color: var(--success); font-weight: 700;
   }
-
   .issue-card.hidden { display: none; }
-
-  /* --- SELECTION BAR --- */
   .selection-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.75rem 2rem;
-    background: rgba(17, 24, 39, 0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    z-index: 200;
-    transform: translateY(100%);
-    transition: transform 0.25s ease;
+    position: fixed; bottom: 0; left: 0; right: 0; padding: 0.85rem 2rem;
+    background: rgba(10, 14, 23, 0.97); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--accent); display: flex; align-items: center;
+    gap: 1rem; z-index: 200; transform: translateY(100%); transition: transform 0.25s ease; flex-wrap: wrap;
   }
-
   .selection-bar.visible { transform: translateY(0); }
-
-  .selection-bar .info {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--accent);
+  .selection-bar .info { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+  .selection-bar .actions { display: flex; gap: 0.5rem; margin-left: auto; flex-wrap: wrap; }
+  .toast {
+    position: fixed; top: 1rem; right: 1rem; padding: 0.75rem 1.25rem;
+    background: var(--success); color: #fff; font-family: var(--mono); font-size: 0.78rem;
+    font-weight: 600; border-radius: 8px; z-index: 1000; transform: translateX(120%);
+    transition: transform 0.3s ease; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
   }
-
-  .selection-bar .actions { display: flex; gap: 0.5rem; margin-left: auto; }
-
-  /* --- RANGE SELECTOR MODAL --- */
+  .toast.show { transform: translateX(0); }
   .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 500;
-    align-items: center;
-    justify-content: center;
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 500; align-items: center; justify-content: center;
   }
-
   .modal-overlay.open { display: flex; }
-
   .modal {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    width: 340px;
-    max-width: 90vw;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.5rem; width: 340px; max-width: 90vw;
   }
-
-  .modal h3 {
-    font-family: var(--mono);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-  }
-
-  .modal label {
-    display: block;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.25rem;
-  }
-
+  .modal h3 { font-family: var(--mono); font-size: 0.9rem; margin-bottom: 1rem; }
+  .modal label { display: block; font-family: var(--mono); font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
   .modal input[type="number"] {
-    width: 100%;
-    padding: 0.5rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    color: var(--text-primary);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    margin-bottom: 0.75rem;
-    outline: none;
+    width: 100%; padding: 0.5rem; background: var(--bg-primary); border: 1px solid var(--border);
+    border-radius: 5px; color: var(--text-primary); font-family: var(--mono); font-size: 0.8rem;
+    margin-bottom: 0.75rem; outline: none;
   }
-
   .modal input[type="number"]:focus { border-color: var(--accent); }
-
-  .modal-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
+  .script-modal .modal { width: 600px; max-width: 95vw; }
+  .script-modal .modal p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; line-height: 1.5; }
+  .script-modal-content {
+    max-height: 50vh; overflow-y: auto; background: var(--bg-primary);
+    border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 0.75rem 0;
   }
-
-  /* --- RESPONSIVE --- */
+  .script-modal-content pre {
+    font-family: var(--mono); font-size: 0.68rem; color: var(--success);
+    white-space: pre-wrap; word-break: break-all; line-height: 1.6;
+  }
   @media (max-width: 600px) {
     .header, .toolbar, .grid-container { padding-left: 1rem; padding-right: 1rem; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 0.4rem; }
     .issue-card { font-size: 0.7rem; padding: 0.6rem 0.3rem; }
+    .instructions { margin: 0.75rem 1rem 0; }
   }
 </style>
 </head>
 <body>
 <div class="app">
-
   <div class="header">
-    <div class="header-top">
-      <div class="header-badge">EPMS JIRA</div>
-    </div>
+    <div class="header-top"><div class="header-badge">EPMS JIRA</div></div>
     <h1><span>DB-</span>Issue Viewer</h1>
     <div class="header-sub">DB-1 through DB-187 &bull; jira.epms.af.mil &bull; Printable HTML Views</div>
+    <div class="instructions">
+      <span class="step-num">1</span> Select issues below (click cards, <strong>Select Range</strong>, or <strong>Select All</strong>)<br>
+      <span class="step-num">2</span> Click <strong>Save as HTML</strong> or <strong>Save as PDF</strong> — downloads a PowerShell script<br>
+      <span class="step-num">3</span> Log into JIRA with your CAC in Chrome, then <strong>close Chrome</strong><br>
+      <span class="step-num">4</span> Right-click the .ps1 file &rarr; <strong>Run with PowerShell</strong> — files save to Desktop
+    </div>
   </div>
 
   <div class="toolbar">
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Jump to issue # or filter...">
-    </div>
+    <div class="search-box"><input type="text" id="search" placeholder="Jump to issue #..."></div>
     <button class="btn" onclick="selectRange()">Select Range</button>
     <button class="btn" onclick="selectAll()">Select All</button>
     <button class="btn" onclick="clearSelection()">Clear</button>
-    <button class="btn btn-accent" onclick="openSelected()">Open Selected</button>
+    <div class="divider"></div>
+    <button class="btn btn-success" onclick="generateScript('html')">&#11015; Save as HTML</button>
+    <button class="btn btn-accent" onclick="generateScript('pdf')">&#11015; Save as PDF</button>
+    <button class="btn" onclick="openSelected()">Open in Tabs</button>
     <div class="stats">
-      <span id="visibleCount">187</span> shown &middot;
-      <strong id="selectedCount">0</strong> selected
+      <span id="visibleCount">187</span> shown &middot; <strong id="selectedCount">0</strong> selected
     </div>
   </div>
 
-  <div class="grid-container">
-    <div class="grid" id="grid"></div>
-  </div>
+  <div class="grid-container"><div class="grid" id="grid"></div></div>
 
   <div class="selection-bar" id="selectionBar">
     <div class="info"><span id="selBarCount">0</span> issues selected</div>
     <div class="actions">
-      <button class="btn" onclick="openSelected()">Open All in Tabs</button>
+      <button class="btn btn-success" onclick="generateScript('html')">&#11015; Save as HTML</button>
+      <button class="btn btn-accent" onclick="generateScript('pdf')">&#11015; Save as PDF</button>
+      <button class="btn" onclick="openSelected()">Open in Tabs</button>
       <button class="btn" onclick="copyLinks()">Copy Links</button>
       <button class="btn" onclick="clearSelection()">Clear</button>
     </div>
@@ -383,173 +223,265 @@
     </div>
   </div>
 
+  <div class="modal-overlay script-modal" id="scriptModal">
+    <div class="modal">
+      <h3 id="scriptModalTitle">PowerShell Script Ready</h3>
+      <p>Script downloaded. Right-click the .ps1 file &rarr; <strong>Run with PowerShell</strong>.</p>
+      <p style="color: var(--warning); font-size: 0.72rem;">&#9888; Log into JIRA with your CAC first, then close Chrome before running.</p>
+      <div class="script-modal-content"><pre id="scriptPreview"></pre></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeScriptModal()">Close</button>
+        <button class="btn btn-accent" onclick="copyScript()">Copy Script</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
 const BASE_URL = 'https://jira.epms.af.mil/si/jira.issueviews:issue-html';
 const TOTAL = 187;
 const selected = new Set();
+let lastScript = '';
 
-// Build grid
 const grid = document.getElementById('grid');
 for (let i = 1; i <= TOTAL; i++) {
-  const card = document.createElement('a');
+  const card = document.createElement('div');
   card.className = 'issue-card';
-  card.textContent = `DB-${i}`;
-  card.href = `${BASE_URL}/DB-${i}/DB-${i}.html`;
-  card.target = '_blank';
-  card.rel = 'noopener';
+  card.textContent = 'DB-' + i;
   card.dataset.num = i;
-
-  // Right-click or ctrl+click to select without opening
-  card.addEventListener('click', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      toggleSelect(i, card);
-    }
-    // Normal click opens the link
+  card.addEventListener('click', function(e) {
+    if (e.shiftKey && selected.size > 0) {
+      var nums = Array.from(selected).sort(function(a,b){return a-b;});
+      var last = nums[nums.length-1];
+      var lo = Math.min(last, i), hi = Math.max(last, i);
+      for (var n = lo; n <= hi; n++) {
+        selected.add(n);
+        var c = grid.querySelector('[data-num="'+n+'"]');
+        if (c) c.classList.add('selected');
+      }
+    } else { toggleSelect(i, card); }
+    updateCounts();
   });
-
-  card.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    toggleSelect(i, card);
+  card.addEventListener('dblclick', function() {
+    window.open(BASE_URL + '/DB-' + i + '/DB-' + i + '.html', '_blank');
   });
-
   grid.appendChild(card);
 }
 
 function toggleSelect(num, card) {
-  if (selected.has(num)) {
-    selected.delete(num);
-    card.classList.remove('selected');
-  } else {
-    selected.add(num);
-    card.classList.add('selected');
-  }
+  if (selected.has(num)) { selected.delete(num); card.classList.remove('selected'); }
+  else { selected.add(num); card.classList.add('selected'); }
   updateCounts();
 }
-
 function updateCounts() {
   document.getElementById('selectedCount').textContent = selected.size;
   document.getElementById('selBarCount').textContent = selected.size;
-
-  const bar = document.getElementById('selectionBar');
-  if (selected.size > 0) {
-    bar.classList.add('visible');
-  } else {
-    bar.classList.remove('visible');
-  }
+  document.getElementById('selectionBar').classList.toggle('visible', selected.size > 0);
 }
-
 function selectAll() {
-  const cards = grid.querySelectorAll('.issue-card:not(.hidden)');
-  cards.forEach(card => {
-    const num = parseInt(card.dataset.num);
-    selected.add(num);
-    card.classList.add('selected');
-  });
-  updateCounts();
+  grid.querySelectorAll('.issue-card:not(.hidden)').forEach(function(c) {
+    selected.add(parseInt(c.dataset.num)); c.classList.add('selected');
+  }); updateCounts();
 }
-
 function clearSelection() {
   selected.clear();
-  grid.querySelectorAll('.issue-card').forEach(c => c.classList.remove('selected'));
+  grid.querySelectorAll('.issue-card').forEach(function(c){c.classList.remove('selected');});
   updateCounts();
 }
-
-function selectRange() {
-  document.getElementById('rangeModal').classList.add('open');
-}
-
-function closeRangeModal() {
-  document.getElementById('rangeModal').classList.remove('open');
-}
-
+function selectRange() { document.getElementById('rangeModal').classList.add('open'); }
+function closeRangeModal() { document.getElementById('rangeModal').classList.remove('open'); }
 function applyRange() {
-  const start = parseInt(document.getElementById('rangeStart').value) || 1;
-  const end = parseInt(document.getElementById('rangeEnd').value) || 187;
-  const lo = Math.max(1, Math.min(start, end));
-  const hi = Math.min(187, Math.max(start, end));
-
-  grid.querySelectorAll('.issue-card').forEach(card => {
-    const num = parseInt(card.dataset.num);
-    if (num >= lo && num <= hi) {
-      selected.add(num);
-      card.classList.add('selected');
-    }
-  });
-  updateCounts();
-  closeRangeModal();
+  var s = parseInt(document.getElementById('rangeStart').value)||1;
+  var e = parseInt(document.getElementById('rangeEnd').value)||187;
+  var lo = Math.max(1, Math.min(s,e)), hi = Math.min(187, Math.max(s,e));
+  grid.querySelectorAll('.issue-card').forEach(function(card){
+    var num = parseInt(card.dataset.num);
+    if (num >= lo && num <= hi) { selected.add(num); card.classList.add('selected'); }
+  }); updateCounts(); closeRangeModal();
 }
 
+function generateScript(format) {
+  if (selected.size === 0) { showToast('Select issues first!', 'var(--warning)'); return; }
+  var sorted = Array.from(selected).sort(function(a,b){return a-b;});
+  var ext = format === 'pdf' ? 'pdf' : 'html';
+  var folder = 'JIRA_DB_' + ext.toUpperCase();
+  var issueList = sorted.map(function(n){return '"DB-'+n+'"';}).join(', ');
+
+  var script = '# =========================================================\r\n';
+  script += '# JIRA DB Issue Downloader - ' + sorted.length + ' issues as ' + ext.toUpperCase() + '\r\n';
+  script += '# Generated: ' + new Date().toLocaleString() + '\r\n';
+  script += '# =========================================================\r\n';
+  script += '#\r\n';
+  script += '# HOW TO USE:\r\n';
+  script += '#   1. Open Chrome - log into JIRA with your CAC\r\n';
+  script += '#   2. Close Chrome completely\r\n';
+  script += '#   3. Right-click this file - Run with PowerShell\r\n';
+  script += '#\r\n';
+  script += '# =========================================================\r\n\r\n';
+
+  script += '$outputDir = "$env:USERPROFILE\\Desktop\\' + folder + '"\r\n';
+  script += '$chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"\r\n\r\n';
+  script += 'if (-not (Test-Path $chromePath)) {\r\n';
+  script += '    $chromePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"\r\n';
+  script += '}\r\n';
+  script += 'if (-not (Test-Path $chromePath)) {\r\n';
+  script += '    Write-Host "ERROR: Chrome not found." -ForegroundColor Red\r\n';
+  script += '    Read-Host "Press Enter to exit"\r\n';
+  script += '    exit\r\n';
+  script += '}\r\n\r\n';
+
+  script += '$running = Get-Process -Name "chrome" -ErrorAction SilentlyContinue\r\n';
+  script += 'if ($running) {\r\n';
+  script += '    Write-Host ""\r\n';
+  script += '    Write-Host "  Chrome is still open!" -ForegroundColor Yellow\r\n';
+  script += '    Write-Host "  Close Chrome so this script can use your login session." -ForegroundColor Yellow\r\n';
+  script += '    $confirm = Read-Host "  Close Chrome now? (Y/N)"\r\n';
+  script += '    if ($confirm -match "^[Yy]") {\r\n';
+  script += '        Stop-Process -Name "chrome" -Force\r\n';
+  script += '        Start-Sleep -Seconds 3\r\n';
+  script += '    } else {\r\n';
+  script += '        Write-Host "Close Chrome and re-run." -ForegroundColor Red\r\n';
+  script += '        Read-Host "Press Enter to exit"\r\n';
+  script += '        exit\r\n';
+  script += '    }\r\n';
+  script += '}\r\n\r\n';
+
+  script += 'New-Item -ItemType Directory -Path $outputDir -Force | Out-Null\r\n\r\n';
+  script += 'Write-Host ""\r\n';
+  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  JIRA DB Issue Downloader" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  Saving ' + sorted.length + ' issues as ' + ext.toUpperCase() + '" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  Output: $outputDir" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host ""\r\n\r\n';
+
+  script += '$baseUrl = "' + BASE_URL + '"\r\n';
+  script += '$issues = @(' + issueList + ')\r\n\r\n';
+  script += '$success = 0\r\n';
+  script += '$failed = @()\r\n';
+  script += '$total = $issues.Count\r\n\r\n';
+
+  script += 'foreach ($i in 0..($total - 1)) {\r\n';
+  script += '    $key = $issues[$i]\r\n';
+  script += '    $num = $i + 1\r\n';
+  script += '    $url = "$baseUrl/$key/$key.html"\r\n';
+  script += '    $outFile = "$outputDir\\$key.' + ext + '"\r\n\r\n';
+  script += '    if ((Test-Path $outFile) -and (Get-Item $outFile).Length -gt 500) {\r\n';
+  script += '        Write-Host "  [$num/$total] $key - SKIP (exists)" -ForegroundColor DarkGray\r\n';
+  script += '        $success++\r\n';
+  script += '        continue\r\n';
+  script += '    }\r\n\r\n';
+  script += '    Write-Host -NoNewline "  [$num/$total] $key ... "\r\n\r\n';
+  script += '    try {\r\n';
+
+  if (format === 'html') {
+    script += '        $result = & $chromePath --headless --disable-gpu --no-sandbox --dump-dom $url 2>$null\r\n';
+    script += '        if ($result -and $result.Length -gt 100) {\r\n';
+    script += '            $result | Out-File -FilePath $outFile -Encoding UTF8\r\n';
+    script += '            Write-Host "OK" -ForegroundColor Green\r\n';
+    script += '            $success++\r\n';
+    script += '        } else {\r\n';
+    script += '            Write-Host "EMPTY" -ForegroundColor Red\r\n';
+    script += '            $failed += $key\r\n';
+    script += '        }\r\n';
+  } else {
+    script += '        Start-Process -FilePath $chromePath -ArgumentList @(\r\n';
+    script += '            "--headless",\r\n';
+    script += '            "--disable-gpu",\r\n';
+    script += '            "--no-sandbox",\r\n';
+    script += '            "--print-to-pdf=$outFile",\r\n';
+    script += '            "--print-to-pdf-no-header",\r\n';
+    script += '            "$url"\r\n';
+    script += '        ) -Wait -WindowStyle Hidden\r\n\r\n';
+    script += '        if ((Test-Path $outFile) -and (Get-Item $outFile).Length -gt 1000) {\r\n';
+    script += '            Write-Host "OK" -ForegroundColor Green\r\n';
+    script += '            $success++\r\n';
+    script += '        } else {\r\n';
+    script += '            Write-Host "FAILED" -ForegroundColor Red\r\n';
+    script += '            $failed += $key\r\n';
+    script += '            if (Test-Path $outFile) { Remove-Item $outFile -Force }\r\n';
+    script += '        }\r\n';
+  }
+
+  script += '    } catch {\r\n';
+  script += '        Write-Host "ERROR: $_" -ForegroundColor Red\r\n';
+  script += '        $failed += $key\r\n';
+  script += '    }\r\n\r\n';
+  script += '    Start-Sleep -Milliseconds 1500\r\n';
+  script += '}\r\n\r\n';
+
+  script += 'Write-Host ""\r\n';
+  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  DONE - $success / $total saved" -ForegroundColor Green\r\n';
+  script += 'if ($failed.Count -gt 0) {\r\n';
+  script += '    Write-Host "  Failed: $($failed -join \', \')" -ForegroundColor Red\r\n';
+  script += '}\r\n';
+  script += 'Write-Host "  Files: $outputDir" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host "  ================================================" -ForegroundColor Cyan\r\n';
+  script += 'Write-Host ""\r\n\r\n';
+  script += 'Start-Process explorer.exe $outputDir\r\n';
+  script += 'Read-Host "Press Enter to close"\r\n';
+
+  lastScript = script;
+
+  var blob = new Blob([script], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Save-DB-Issues-' + ext.toUpperCase() + '.ps1';
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  document.getElementById('scriptModalTitle').textContent = 'Script Downloaded - ' + sorted.length + ' issues as ' + ext.toUpperCase();
+  document.getElementById('scriptPreview').textContent = script;
+  document.getElementById('scriptModal').classList.add('open');
+  showToast('Script downloaded! ' + sorted.length + ' issues', 'var(--success)');
+}
+
+function closeScriptModal() { document.getElementById('scriptModal').classList.remove('open'); }
+function copyScript() {
+  navigator.clipboard.writeText(lastScript).then(function(){ showToast('Copied!', 'var(--success)'); });
+}
 function openSelected() {
-  if (selected.size === 0) {
-    alert('No issues selected.\n\nClick = open single issue\nCtrl+Click or Right-Click = select multiple');
-    return;
-  }
-  if (selected.size > 20) {
-    if (!confirm(`Open ${selected.size} tabs? Your browser might not like that.\n\nConsider using "Copy Links" instead.`)) return;
-  }
-  const sorted = [...selected].sort((a, b) => a - b);
-  sorted.forEach(num => {
-    window.open(`${BASE_URL}/DB-${num}/DB-${num}.html`, '_blank');
+  if (selected.size === 0) return;
+  if (selected.size > 15 && !confirm('Open ' + selected.size + ' tabs?')) return;
+  Array.from(selected).sort(function(a,b){return a-b;}).forEach(function(n){
+    window.open(BASE_URL + '/DB-' + n + '/DB-' + n + '.html', '_blank');
   });
 }
-
 function copyLinks() {
   if (selected.size === 0) return;
-  const sorted = [...selected].sort((a, b) => a - b);
-  const links = sorted.map(n => `${BASE_URL}/DB-${n}/DB-${n}.html`).join('\n');
-  navigator.clipboard.writeText(links).then(() => {
-    alert(`${selected.size} links copied to clipboard!`);
-  }).catch(() => {
-    // Fallback
-    const ta = document.createElement('textarea');
-    ta.value = links;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    alert(`${selected.size} links copied to clipboard!`);
-  });
+  var links = Array.from(selected).sort(function(a,b){return a-b;})
+    .map(function(n){return BASE_URL+'/DB-'+n+'/DB-'+n+'.html';}).join('\n');
+  navigator.clipboard.writeText(links).then(function(){ showToast(selected.size + ' links copied!', 'var(--success)'); });
 }
 
-// Search / filter
-document.getElementById('search').addEventListener('input', (e) => {
-  const val = e.target.value.trim().toLowerCase().replace('db-', '');
-  const cards = grid.querySelectorAll('.issue-card');
-  let visible = 0;
-
-  if (val === '') {
-    cards.forEach(c => { c.classList.remove('hidden'); visible++; });
-  } else if (/^\d+$/.test(val)) {
-    // Number search - show matching
-    cards.forEach(card => {
-      const num = card.dataset.num;
-      if (num.startsWith(val)) {
-        card.classList.remove('hidden');
-        visible++;
-      } else {
-        card.classList.add('hidden');
-      }
+document.getElementById('search').addEventListener('input', function(e) {
+  var val = e.target.value.trim().replace(/db-/i, '');
+  var cards = grid.querySelectorAll('.issue-card');
+  var visible = 0;
+  if (val === '') { cards.forEach(function(c){c.classList.remove('hidden'); visible++;}); }
+  else if (/^\d+$/.test(val)) {
+    cards.forEach(function(card){
+      if (card.dataset.num.startsWith(val)) { card.classList.remove('hidden'); visible++; }
+      else { card.classList.add('hidden'); }
     });
-  } else {
-    cards.forEach(c => { c.classList.remove('hidden'); visible++; });
-  }
-
+  } else { cards.forEach(function(c){c.classList.remove('hidden'); visible++;}); }
   document.getElementById('visibleCount').textContent = visible;
 });
 
-// Keyboard shortcut: Escape clears search
-document.addEventListener('keydown', (e) => {
+function showToast(msg, color) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.style.background = color || 'var(--success)';
+  t.classList.add('show'); setTimeout(function(){t.classList.remove('show');}, 2500);
+}
+
+document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    const modal = document.getElementById('rangeModal');
-    if (modal.classList.contains('open')) {
-      closeRangeModal();
-    } else {
-      document.getElementById('search').value = '';
-      document.getElementById('search').dispatchEvent(new Event('input'));
-    }
+    if (document.getElementById('scriptModal').classList.contains('open')) closeScriptModal();
+    else if (document.getElementById('rangeModal').classList.contains('open')) closeRangeModal();
+    else { document.getElementById('search').value = ''; document.getElementById('search').dispatchEvent(new Event('input')); }
   }
 });
 </script>
